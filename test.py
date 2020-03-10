@@ -12,6 +12,7 @@ import os
 PROJECT_ROOT = os.path.dirname(__file__)
 BACKGROUND_IMAGES_DIR = os.path.dirname(__file__) + '/data/images/background'
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -60,6 +61,13 @@ class Ui_MainWindow(object):
 
         self.backImageChangeButton.clicked.connect(self.changeBackgroundImage)
 
+    def populate(self):
+        path = PROJECT_ROOT
+        model = QtWidgets.QFileSystemModel()
+        model.setRootPath(QtCore.QDir.rootPath())
+        self.treeView.setModel(model)
+        self.treeView.setRootIndex(model.index(path))
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -70,12 +78,14 @@ class Ui_MainWindow(object):
         imagePath = "data/images/background/" + str(self.backImagecomboBox.currentText())
         self.backgroundImage.setPixmap(QtGui.QPixmap(imagePath))
 
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    ui.populate()
     MainWindow.show()
     sys.exit(app.exec_())
 

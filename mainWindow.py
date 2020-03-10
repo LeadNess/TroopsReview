@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'test.ui'
+# Form implementation generated from reading ui file 'mainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
@@ -14,11 +14,11 @@ PROJECT_ROOT = os.path.dirname(__file__)
 BACKGROUND_IMAGES_DIR = os.path.dirname(__file__) + '/data/images/background'
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1039, 757)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
+class Ui_addBackgroundImageLabel(object):
+    def setupUi(self, addBackgroundImageLabel):
+        addBackgroundImageLabel.setObjectName("addBackgroundImageLabel")
+        addBackgroundImageLabel.resize(1035, 757)
+        self.centralwidget = QtWidgets.QWidget(addBackgroundImageLabel)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 0, 2, 2))
@@ -47,54 +47,46 @@ class Ui_MainWindow(object):
         self.backImagecomboBox = QtWidgets.QComboBox(self.centralwidget)
         self.backImagecomboBox.setGeometry(QtCore.QRect(820, 100, 181, 25))
         self.backImagecomboBox.setObjectName("backImagecomboBox")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(820, 170, 181, 17))
-        self.label.setObjectName("label")
-        self.treeView = QtWidgets.QTreeView(self.centralwidget)
-        self.treeView.setGeometry(QtCore.QRect(820, 190, 181, 192))
-        self.treeView.setObjectName("treeView")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1039, 22))
+        addBackgroundImageLabel.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(addBackgroundImageLabel)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1035, 22))
         self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.menu = QtWidgets.QMenu(self.menubar)
+        self.menu.setObjectName("menu")
+        addBackgroundImageLabel.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(addBackgroundImageLabel)
         self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        addBackgroundImageLabel.setStatusBar(self.statusbar)
+        self.action = QtWidgets.QAction(addBackgroundImageLabel)
+        self.action.setObjectName("action")
+        self.menu.addSeparator()
+        self.menu.addAction(self.action)
+        self.menubar.addAction(self.menu.menuAction())
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(addBackgroundImageLabel)
+        QtCore.QMetaObject.connectSlotsByName(addBackgroundImageLabel)
 
-    def retranslateUi(self, MainWindow):
+        self.backImageChangeButton.clicked.connect(self.changeBackgroundImage)
+
+    def changeBackgroundImage(self):
+        imagePath = "data/images/background/" + str(self.backImagecomboBox.currentText())
+        self.backgroundImage.setPixmap(QtGui.QPixmap(imagePath))
+
+    def retranslateUi(self, addBackgroundImageLabel):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.backImageChangeButton.setText(_translate("MainWindow", "Поменять"))
-        self.chooseBackgroundImageLabel.setText(_translate("MainWindow", "Выберете фоновую карту"))
-        self.label.setText(_translate("MainWindow", "Добавить фоновую карту"))
-
-
-
-class FileBrowser(QtWidgets.QMainWindow, Ui_MainWindow):
-
-    def __init__(self):
-        super(FileBrowser, self).__init__()
-        self.setupUi(self)
-        self.populate()
-
-    def populate(self):
-        path = PROJECT_ROOT
-        model = QtWidgets.QFileSystemModel()
-        model.setRootPath(QtCore.QDir.rootPath())
-        self.treeView.setModel(model)
-        self.treeView.setRootIndex(model.index(path))
+        addBackgroundImageLabel.setWindowTitle(_translate("addBackgroundImageLabel", "MainWindow"))
+        self.backImageChangeButton.setText(_translate("addBackgroundImageLabel", "Поменять"))
+        self.chooseBackgroundImageLabel.setText(_translate("addBackgroundImageLabel", "Выберете фоновую карту"))
+        self.menu.setTitle(_translate("addBackgroundImageLabel", "Файлы"))
+        self.action.setText(_translate("addBackgroundImageLabel", "Добавить фоновую карту"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    addBackgroundImageLabel = QtWidgets.QMainWindow()
+    ui = Ui_addBackgroundImageLabel()
+    ui.setupUi(addBackgroundImageLabel)
+    addBackgroundImageLabel.show()
     sys.exit(app.exec_())
 
