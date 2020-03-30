@@ -1,18 +1,11 @@
 # -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'mainWindow.ui'
-#
-# Created by: PyQt5 UI code generator 5.9.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 import os
 
 
 PROJECT_ROOT = os.path.dirname(__file__)
 BACKGROUND_IMAGES_DIR = os.path.dirname(__file__) + '/data/images/background'
-
+ELEMENTS_IMAGES_DIR = os.path.dirname(__file__) + '/data/images/elements'
 
 class Ui_addBackgroundImageLabel(object):
     def setupUi(self, addBackgroundImageLabel):
