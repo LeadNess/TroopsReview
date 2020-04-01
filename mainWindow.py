@@ -4,7 +4,7 @@ import sys
 from PyQt5 import QtCore, QtGui, Qt
 from PyQt5.QtWidgets import (QWidget, QMainWindow, QDesktopWidget, QGridLayout, QLabel, QPushButton, QComboBox,
                              QMenuBar, QMenu, QStatusBar, QAction, QApplication, QDialog, QDialogButtonBox,
-                             QVBoxLayout, QHBoxLayout)
+                             QVBoxLayout, QHBoxLayout, QMessageBox)
 from PyQt5.QtGui import QIcon
 
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -13,38 +13,22 @@ ELEMENTS_IMAGES_DIR = os.path.dirname(__file__) + '/data/images/elements'
 ICONS_IMAGES_DIR = os.path.dirname(__file__) + '/data/images/icons'
 
 
-class AboutInformation(QDialog):
-    def __init__(self):
-        super().__init__()
-
-        self.resize(500, 500)
-
-        self.setWindowTitle('О программе')
-        self.setWindowIcon(QIcon(os.path.join(ICONS_IMAGES_DIR, 'about.png')))
-        self.button_box = QDialogButtonBox(QDialogButtonBox.Ok)
-        self.button_box.accepted.connect(self.accept)
-
-        self.label = QLabel("""
-                            © Lpshkn, 2020""")
-
-        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
-
-        self.layout = QVBoxLayout()
-        #self.layout.addWidget(self.button_box)
-        self.layout.addWidget(self.label)
-        self.setLayout(self.layout)
-
-        self.show()
-
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi()
 
     def setup_screen_size(self):
-        screen_size = QDesktopWidget().screenGeometry()
-        self.resize(screen_size.width() - 200, screen_size.height() - 100)
+        desktop = QDesktopWidget()
+        screen_size = desktop.availableGeometry()
+        center_point = screen_size.center()
+
+        width = screen_size.width() - 100
+        height = screen_size.height() - 100
+        self.setGeometry(center_point.x() - width / 2, center_point.y() - height / 2, width, height)
+
+        self.setMinimumHeight(600)
+        self.setMinimumWidth(800)
 
     def setup_menu(self):
         menubar = self.menuBar()
@@ -77,18 +61,27 @@ class MainWindow(QMainWindow):
         pass
 
     def show_info(self):
-        self.information = AboutInformation()
-        self.information.show()
+        info_message = QMessageBox(parent=self)
+        info_message.setWindowTitle('О программе')
+        info_message.setWindowIcon(QIcon(os.path.join(ICONS_IMAGES_DIR, 'about.png')))
+        info_message.setIcon(QMessageBox.Question)
+        info_message.setText("""© Lpshkn, 2020""")
+        info_message.setStandardButtons(QMessageBox.Ok)
+        info_message.frameGeometry().moveCenter(info_message.frameGeometry().center())
+        info_message.show()
 
     def setupUi(self):
+        self.setWindowTitle('Troops Review')
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinMaxButtonsHint)
         self.setup_screen_size()
 
         self.setup_menu()
-        self.show()
+        self.showMaximized()
 
     def changeBackgroundImage(self):
         imagePath = "data/images/background/" + str(self.backImagecomboBox.currentText())
         self.backgroundImage.setPixmap(QtGui.QPixmap(imagePath))
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
