@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import (QWidget, QMainWindow, QDesktopWidget, QGridLayout, 
                              QMenuBar, QMenu, QStatusBar, QAction, QApplication, QDialog, QDialogButtonBox,
                              QVBoxLayout, QHBoxLayout, QMessageBox)
 from PyQt5.QtGui import QIcon
+from createNewMap import CreateNewMap
 
 PROJECT_ROOT = os.path.dirname(__file__)
 BACKGROUND_IMAGES_DIR = os.path.dirname(__file__) + '/data/images/background'
@@ -55,7 +56,8 @@ class MainWindow(QMainWindow):
         self.statusBar()
 
     def create_file(self):
-        pass
+        create_new_file = CreateNewMap(self)
+        create_new_file.show()
 
     def open_file(self):
         pass
@@ -77,10 +79,6 @@ class MainWindow(QMainWindow):
 
         self.setup_menu()
         self.showMaximized()
-
-    def changeBackgroundImage(self):
-        imagePath = "data/images/background/" + str(self.backImagecomboBox.currentText())
-        self.backgroundImage.setPixmap(QtGui.QPixmap(imagePath))
 
 
 if __name__ == "__main__":
