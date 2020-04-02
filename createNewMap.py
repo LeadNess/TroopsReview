@@ -18,13 +18,19 @@ class CreateNewMap(QDialog, FORM_CLASS):
         self.setWindowModality(Qt.ApplicationModal)
         self.setFixedSize(self.size())
 
+    def enable_accept_button(self):
+        if self.mapsDirectoryLine.text() and self.troopsDirectoryLine.text():
+            self.acceptButton.setEnabled(True)
+        else:
+            self.acceptButton.setEnabled(False)
+
     def maps_manage(self):
-        sender_name = self.sender().objectName()
+        sender = self.sender()
 
         directory = QFileDialog.getExistingDirectory(self, caption="Открыть", directory="")
 
         if directory:
-            if sender_name == 'Button1':
-                self.lineEdit1.setText(directory)
-            elif sender_name == 'Button2':
-                self.lineEdit2.setText(directory)
+            if sender == self.mapsDirectoryButton:
+                self.mapsDirectoryLine.setText(directory)
+            elif sender == self.troopsDirectoryButton:
+                self.troopsDirectoryLine.setText(directory)

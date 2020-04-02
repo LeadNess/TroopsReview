@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>589</width>
-    <height>147</height>
+    <width>458</width>
+    <height>177</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,8 +24,8 @@
     <widget class="QLabel" name="label">
      <property name="font">
       <font>
-       <family>Times New Roman</family>
-       <pointsize>12</pointsize>
+       <family>Segoe UI Semilight</family>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="text">
@@ -36,17 +36,17 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLineEdit" name="lineEdit1">
+      <widget class="QLineEdit" name="mapsDirectoryLine">
        <property name="font">
         <font>
-         <family>Times New Roman</family>
-         <pointsize>12</pointsize>
+         <family>Segoe UI Semilight</family>
+         <pointsize>9</pointsize>
         </font>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="Button1">
+      <widget class="QToolButton" name="mapsDirectoryButton">
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -61,8 +61,8 @@
     <widget class="QLabel" name="label_2">
      <property name="font">
       <font>
-       <family>Times New Roman</family>
-       <pointsize>12</pointsize>
+       <family>Segoe UI Semilight</family>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -76,17 +76,17 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLineEdit" name="lineEdit2">
+      <widget class="QLineEdit" name="troopsDirectoryLine">
        <property name="font">
         <font>
-         <family>Times New Roman</family>
-         <pointsize>12</pointsize>
+         <family>Segoe UI Semilight</family>
+         <pointsize>9</pointsize>
         </font>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="Button2">
+      <widget class="QToolButton" name="troopsDirectoryButton">
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -97,12 +97,62 @@
      </item>
     </layout>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="acceptButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="font">
+        <font>
+         <family>Segoe UI Semilight</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Принять</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <property name="autoRepeat">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="rejectButton">
+       <property name="font">
+        <font>
+         <family>Segoe UI Semilight</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Отменить</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>Button1</sender>
+   <sender>mapsDirectoryButton</sender>
    <signal>clicked()</signal>
    <receiver>Dialog</receiver>
    <slot>maps_manage()</slot>
@@ -118,7 +168,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>Button2</sender>
+   <sender>troopsDirectoryButton</sender>
    <signal>clicked()</signal>
    <receiver>Dialog</receiver>
    <slot>maps_manage()</slot>
@@ -133,8 +183,73 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>acceptButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>118</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rejectButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>339</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>troopsDirectoryLine</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Dialog</receiver>
+   <slot>enable_accept_button()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mapsDirectoryLine</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Dialog</receiver>
+   <slot>enable_accept_button()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>maps_manage()</slot>
+  <slot>enable_accept_button()</slot>
  </slots>
 </ui>
