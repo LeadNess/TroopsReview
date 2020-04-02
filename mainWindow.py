@@ -74,6 +74,7 @@ class MainWindow(QMainWindow):
 
     def setupUi(self):
         self.setWindowTitle('Troops Review')
+        self.setWindowIcon(QIcon(os.path.join(ICONS_IMAGES_DIR, 'mainIcon.png')))
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinMaxButtonsHint)
         self.setup_screen_size()
 
