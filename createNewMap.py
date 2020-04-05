@@ -34,7 +34,7 @@ class CreateNewMap(QDialog, FORM_CLASS):
         self.configure_ui()
 
         # These values specify that paths were written in the edit line by user were incorrect.
-        self.incorrect_maps_directory = False
+        self.incorrect_map_filename = False
         self.incorrect_troops_directory = False
 
         # These values are necessary to find out indices of lines edit
@@ -52,10 +52,10 @@ class CreateNewMap(QDialog, FORM_CLASS):
     def enable_accept_button(self):
         sender = self.sender()
 
-        if self.incorrect_maps_directory and sender == self.mapsDirectoryLine:
+        if self.incorrect_map_filename and sender == self.mapsDirectoryLine:
             self.VLayout.removeWidget(self.error_maps_lbl)
             self.error_maps_lbl.deleteLater()
-            self.incorrect_maps_directory = False
+            self.incorrect_map_filename = False
             self.index_troops_line -= 1
 
         if self.incorrect_troops_directory and sender == self.troopsDirectoryLine:
@@ -71,24 +71,29 @@ class CreateNewMap(QDialog, FORM_CLASS):
     def files_manage(self):
         sender = self.sender()
 
-        directory = QFileDialog.getExistingDirectory(self, caption="Открыть", directory="")
+        if sender == self.mapsDirectoryButton:
+            path_to_map, _ = QFileDialog.getOpenFileName(self, caption="Открыть", directory="",
+                                                         filter="Image files (*.jpg *.JPG *.png *.jpeg *.bmp")
 
-        if directory:
-            if sender == self.mapsDirectoryButton:
-                self.mapsDirectoryLine.setText(directory)
-            elif sender == self.troopsDirectoryButton:
+            if path_to_map:
+                self.mapsDirectoryLine.setText(path_to_map)
+
+        elif sender == self.troopsDirectoryButton:
+            directory = QFileDialog.getExistingDirectory(self, caption="Открыть", directory="")
+
+            if directory:
                 self.troopsDirectoryLine.setText(directory)
 
     def accept(self):
-        maps_directory = self.mapsDirectoryLine.text()
+        map_filename = self.mapsDirectoryLine.text()
         troops_directory = self.troopsDirectoryLine.text()
 
-        if not os.path.isdir(maps_directory) and not self.incorrect_maps_directory:
-            self.error_maps_lbl = QLabel("Ошибка: данной директории не существует", self)
+        if not os.path.isfile(map_filename) and not self.incorrect_map_filename:
+            self.error_maps_lbl = QLabel("Ошибка: данного файла не существует", self)
             self.error_maps_lbl.setStyleSheet('QLabel { color : red; }')
             self.VLayout.insertWidget(self.index_maps_line + 1, self.error_maps_lbl)
             self.index_troops_line += 1
-            self.incorrect_maps_directory = True
+            self.incorrect_map_filename = True
             self.acceptButton.setEnabled(False)
 
         if not os.path.isdir(troops_directory) and not self.incorrect_troops_directory:
@@ -98,8 +103,8 @@ class CreateNewMap(QDialog, FORM_CLASS):
             self.incorrect_troops_directory = True
             self.acceptButton.setEnabled(False)
 
-        if not self.incorrect_troops_directory and not self.incorrect_maps_directory:
+        if not self.incorrect_troops_directory and not self.incorrect_map_filename:
             super().accept()
-            central_widget = CentralWidget(self.parent(), maps_directory, troops_directory)
+            central_widget = CentralWidget(self.parent(), map_filename, troops_directory)
             self.parent().setCentralWidget(central_widget)
             central_widget.show()

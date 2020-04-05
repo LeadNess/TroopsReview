@@ -41,15 +41,16 @@ class CentralWidget(QWidget, FORM_CLASS):
     Class represents the main action in this program. It provides the ability to modulate fight actions at the map.
     Also it allows to drag troops' images into the map from the right panel, which it implements too.
     """
-    def __init__(self, parent, maps_directory, troops_directory):
+    def __init__(self, parent, map_filename, troops_directory):
         QWidget.__init__(self, parent)
 
         self.setupUi(self)
 
-        self.maps_directory = maps_directory
+        self.map_filename = map_filename
         self.troops_directory = troops_directory
 
         self.set_troops_panel()
+        self.set_map()
 
     def set_troops_panel(self):
         # Load images scaled to the width of the right-hand panel from selected directory
@@ -61,3 +62,8 @@ class CentralWidget(QWidget, FORM_CLASS):
             label.setMinimumHeight(self.troops_panel.minimumWidth())
             label.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed))
             self.troops_vertical_layout.addWidget(label)
+
+    def set_map(self):
+        label = QLabel()
+        label.setPixmap(QPixmap(self.map_filename))
+        self.map_layout.addWidget(label)

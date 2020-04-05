@@ -50,7 +50,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Выберите директорию с необходимыми картами:</string>
+      <string>Выберите необходимую карту:</string>
      </property>
     </widget>
    </item>
