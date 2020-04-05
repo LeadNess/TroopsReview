@@ -10,6 +10,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
 import os
+from centralWidget import CentralWidget
 
 # Define the directory of ui's files
 UI_DIR = os.path.dirname(__file__) + '/ui'
@@ -79,10 +80,10 @@ class CreateNewMap(QDialog, FORM_CLASS):
                 self.troopsDirectoryLine.setText(directory)
 
     def accept(self):
-        mapsDirectory = self.mapsDirectoryLine.text()
-        troopsDirectory = self.troopsDirectoryLine.text()
+        maps_directory = self.mapsDirectoryLine.text()
+        troops_directory = self.troopsDirectoryLine.text()
 
-        if not os.path.isdir(mapsDirectory) and not self.incorrect_maps_directory:
+        if not os.path.isdir(maps_directory) and not self.incorrect_maps_directory:
             self.error_maps_lbl = QLabel("Ошибка: данной директории не существует", self)
             self.error_maps_lbl.setStyleSheet('QLabel { color : red; }')
             self.VLayout.insertWidget(self.index_maps_line + 1, self.error_maps_lbl)
@@ -90,9 +91,15 @@ class CreateNewMap(QDialog, FORM_CLASS):
             self.incorrect_maps_directory = True
             self.acceptButton.setEnabled(False)
 
-        if not os.path.isdir(troopsDirectory) and not self.incorrect_troops_directory:
+        if not os.path.isdir(troops_directory) and not self.incorrect_troops_directory:
             self.error_troops_lbl = QLabel("Ошибка: данной директории не существует", self)
             self.error_troops_lbl.setStyleSheet('QLabel { color : red; }')
             self.VLayout.insertWidget(self.index_troops_line + 1, self.error_troops_lbl)
             self.incorrect_troops_directory = True
             self.acceptButton.setEnabled(False)
+
+        if not self.incorrect_troops_directory and not self.incorrect_maps_directory:
+            super().accept()
+            central_widget = CentralWidget(self.parent(), maps_directory, troops_directory)
+            self.parent().setCentralWidget(central_widget)
+            central_widget.show()
