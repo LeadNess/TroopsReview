@@ -54,6 +54,9 @@ class CentralWidget(QWidget, FORM_CLASS):
         self.set_troops_panel()
         self.set_map()
 
+        self.map_area.current_scale = 1.0
+        self.map_area.max_scale = 2
+
         self.map_area.wheelEvent = self.wheelEvent
 
     def set_troops_panel(self):
@@ -75,8 +78,11 @@ class CentralWidget(QWidget, FORM_CLASS):
 
     def wheelEvent(self, event):
         if Qt.Key_Control in self.keys:
-            zoom_in = 1.1
-            zoom_out = 1 / zoom_in
+            self.map_area.min_scale_for_width = self.map_area.width() / self.scene.width()
+            self.map_area.min_scale_for_height = self.map_area.height() / self.scene.height()
+
+            scale_factor = 1.1
+
             if event.angleDelta().y() > 0:
                 zoom = zoom_in
             else:
