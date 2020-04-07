@@ -74,7 +74,29 @@ class CentralWidget(QWidget, FORM_CLASS):
         self.map_area.show()
 
     def wheelEvent(self, event):
-        pass
+        if Qt.Key_Control in self.keys:
+            zoom_in = 1.1
+            zoom_out = 1 / zoom_in
+            if event.angleDelta().y() > 0:
+                zoom = zoom_in
+            else:
+                zoom = zoom_out
+            self.map_area.scale(zoom, zoom)
+        else:
+            vertical = self.map_area.verticalScrollBar().value()
+            horizontal = self.map_area.horizontalScrollBar().value()
+
+            if event.angleDelta().y() > 0:
+                vertical -= 30
+                horizontal -= 30
+            else:
+                vertical += 30
+                horizontal += 30
+
+            if Qt.Key_Shift in self.keys:
+                self.map_area.horizontalScrollBar().setValue(horizontal)
+            else:
+                self.map_area.verticalScrollBar().setValue(vertical)
 
     def keyPressEvent(self, event):
         self.keys.add(event.key())
