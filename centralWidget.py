@@ -2,7 +2,7 @@
 This module implements the working with with a map, troops' elements at the right panel
 and represents the main role in this program.
 """
-from PyQt5.QtWidgets import QDialog, QFileDialog, QLabel, QWidget, QSizePolicy
+from PyQt5.QtWidgets import QDialog, QFileDialog, QLabel, QWidget, QSizePolicy, QGraphicsScene, QGraphicsView
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5 import uic
@@ -48,9 +48,13 @@ class CentralWidget(QWidget, FORM_CLASS):
 
         self.map_filename = map_filename
         self.troops_directory = troops_directory
+        self.zoom = 1
+        self.keys = set()
 
         self.set_troops_panel()
         self.set_map()
+
+        self.map_area.wheelEvent = self.wheelEvent
 
     def set_troops_panel(self):
         # Load images scaled to the width of the right-hand panel from selected directory
@@ -64,6 +68,19 @@ class CentralWidget(QWidget, FORM_CLASS):
             self.troops_vertical_layout.addWidget(label)
 
     def set_map(self):
-        label = QLabel()
-        label.setPixmap(QPixmap(self.map_filename))
-        self.map_layout.addWidget(label)
+        self.scene = QGraphicsScene()
+        self.scene.addPixmap(QPixmap(self.map_filename))
+        self.map_area.setScene(self.scene)
+        self.map_area.show()
+
+    def wheelEvent(self, event):
+        pass
+
+    def keyPressEvent(self, event):
+        self.keys.add(event.key())
+
+    def keyReleaseEvent(self, event):
+        self.keys.remove(event.key())
+
+
+
