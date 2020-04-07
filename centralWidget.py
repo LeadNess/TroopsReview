@@ -84,10 +84,20 @@ class CentralWidget(QWidget, FORM_CLASS):
             scale_factor = 1.1
 
             if event.angleDelta().y() > 0:
-                zoom = zoom_in
+                if self.map_area.current_scale * scale_factor <= self.map_area.maximum_scale:
+                    self.map_area.scale(scale_factor, scale_factor)
+                    self.map_area.current_scale *= scale_factor
+
             else:
-                zoom = zoom_out
-            self.map_area.scale(zoom, zoom)
+                new_scale = self.map_area.current_scale / scale_factor
+
+                if new_scale >= self.map_area.min_scale_for_width:
+                    self.map_area.scale(1 / scale_factor, 1 / scale_factor)
+                    self.map_area.current_scale /= scale_factor
+                else:
+                    scale = self.map_area.min_scale_for_width
+                    self.map_area.scale(scale, scale)
+
         else:
             vertical = self.map_area.verticalScrollBar().value()
             horizontal = self.map_area.horizontalScrollBar().value()
