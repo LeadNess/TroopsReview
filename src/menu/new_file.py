@@ -9,17 +9,17 @@ from PyQt5.QtWidgets import QDialog, QFileDialog, QLabel
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
-import os
-from centralWidget import CentralWidget
+from widgets.map_widget import CentralWidget
+from os.path import dirname, join, isfile, isdir
 
+
+ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
 # Define the directory of ui's files
-UI_DIR = os.path.dirname(__file__) + '/ui'
+UI_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'ui')
 # Define the filename to ui file of that Dialog
-FILENAME_UI = os.path.join(UI_DIR, 'new_file.ui')
+FILENAME_UI = join(UI_DIR, 'new_file.ui')
 # Define the form class of that ui
 FORM_CLASS = uic.loadUiType(FILENAME_UI)[0]
-# Define the filename of the directory of icons
-ICONS_IMAGES_DIR = os.path.dirname(__file__) + '/data/images/icons'
 
 
 class CreateNewMap(QDialog, FORM_CLASS):
@@ -46,7 +46,7 @@ class CreateNewMap(QDialog, FORM_CLASS):
         """
         Set the window's configuration.
         """
-        self.setWindowIcon(QIcon(os.path.join(ICONS_IMAGES_DIR, 'mainIcon.png')))
+        self.setWindowIcon(QIcon(join(ICONS_IMAGES_DIR, 'mainIcon.png')))
         self.setWindowModality(Qt.ApplicationModal)
 
     def enable_accept_button(self):
@@ -88,7 +88,7 @@ class CreateNewMap(QDialog, FORM_CLASS):
         map_filename = self.mapsDirectoryLine.text()
         troops_directory = self.troopsDirectoryLine.text()
 
-        if not os.path.isfile(map_filename) and not self.incorrect_map_filename:
+        if not isfile(map_filename) and not self.incorrect_map_filename:
             self.error_maps_lbl = QLabel("Ошибка: данного файла не существует", self)
             self.error_maps_lbl.setStyleSheet('QLabel { color : red; }')
             self.VLayout.insertWidget(self.index_maps_line + 1, self.error_maps_lbl)
@@ -96,7 +96,7 @@ class CreateNewMap(QDialog, FORM_CLASS):
             self.incorrect_map_filename = True
             self.acceptButton.setEnabled(False)
 
-        if not os.path.isdir(troops_directory) and not self.incorrect_troops_directory:
+        if not isdir(troops_directory) and not self.incorrect_troops_directory:
             self.error_troops_lbl = QLabel("Ошибка: данной директории не существует", self)
             self.error_troops_lbl.setStyleSheet('QLabel { color : red; }')
             self.VLayout.insertWidget(self.index_troops_line + 1, self.error_troops_lbl)

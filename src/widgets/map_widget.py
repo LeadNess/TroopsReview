@@ -2,16 +2,18 @@
 This module implements the working with with a map, troops' elements at the right panel
 and represents the main role in this program.
 """
-from PyQt5.QtWidgets import QDialog, QFileDialog, QLabel, QWidget, QSizePolicy, QGraphicsScene, QGraphicsView
+from PyQt5.QtWidgets import QLabel, QWidget, QSizePolicy, QGraphicsScene
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QPixmap, QImage
+from PyQt5.QtGui import QPixmap
 from PyQt5 import uic
-import os
+from os.path import dirname, join
+from os import listdir
+
 
 # Define the directory of ui's files
-UI_DIR = os.path.dirname(__file__) + '/ui'
+UI_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'ui')
 # Define the filename to ui file of that widget
-FILENAME_UI = os.path.join(UI_DIR, 'centralWidget.ui')
+FILENAME_UI = join(UI_DIR, 'centralWidget.ui')
 # Define the form class of that ui
 FORM_CLASS = uic.loadUiType(FILENAME_UI)[0]
 
@@ -26,9 +28,9 @@ def load_images(directory, width=None, height=None):
     :return: list of QPixmap's instances.
     """
 
-    files = os.listdir(directory)
+    files = listdir(directory)
     images = list(filter(lambda x: x[len(x)-3:len(x)].lower() in ['png', 'jpeg', 'jpg', 'bmp'], files))
-    images = [QPixmap(os.path.join(directory, image)) for image in images]
+    images = [QPixmap(join(directory, image)) for image in images]
 
     if width and height:
         return [image.scaled(width, height) for image in images]
