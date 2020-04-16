@@ -5,14 +5,11 @@ from PyQt5.QtGui import QIcon
 from menu.new_file import CreateNewMap
 
 
-# Define the directory of ui's files
-UI_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'ui')
-ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
-
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        # Define the directory of ui's files
+        self.ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
         self.setupUi()
 
     def setup_screen_size(self):
@@ -31,20 +28,20 @@ class MainWindow(QMainWindow):
         menubar = self.menuBar()
         file_menu = menubar.addMenu('&Файл')
 
-        create_new_file = QAction(QIcon(join(ICONS_IMAGES_DIR, 'create.png')), 'Создать', self)
+        create_new_file = QAction(QIcon(join(self.ICONS_IMAGES_DIR, 'create.png')), 'Создать', self)
         create_new_file.setShortcut('Ctrl+N')
         create_new_file.setStatusTip('Создать новую карту')
         create_new_file.triggered.connect(self.create_file)
         file_menu.addAction(create_new_file)
 
-        open_file = QAction(QIcon(join(ICONS_IMAGES_DIR, 'open.png')), 'Открыть', self)
+        open_file = QAction(QIcon(join(self.ICONS_IMAGES_DIR, 'open.png')), 'Открыть', self)
         open_file.setShortcut('Ctrl+O')
         open_file.setStatusTip('Открыть созданную ранее карту')
         open_file.triggered.connect(self.open_file)
         file_menu.addAction(open_file)
 
         help_menu = menubar.addMenu('&Помощь')
-        reference = QAction(QIcon(join(ICONS_IMAGES_DIR, 'about.png')), 'О программе', self)
+        reference = QAction(QIcon(join(self.ICONS_IMAGES_DIR, 'about.png')), 'О программе', self)
         reference.setStatusTip('Показать информацию о данной программе')
         reference.triggered.connect(self.show_info)
         help_menu.addAction(reference)
@@ -61,7 +58,7 @@ class MainWindow(QMainWindow):
     def show_info(self):
         info_message = QMessageBox(parent=self)
         info_message.setWindowTitle('О программе')
-        info_message.setWindowIcon(QIcon(join(ICONS_IMAGES_DIR, 'about.png')))
+        info_message.setWindowIcon(QIcon(join(self.ICONS_IMAGES_DIR, 'about.png')))
         info_message.setIcon(QMessageBox.Question)
         info_message.setText("""© Lpshkn, 2020""")
         info_message.setStandardButtons(QMessageBox.Ok)
@@ -70,7 +67,7 @@ class MainWindow(QMainWindow):
 
     def setupUi(self):
         self.setWindowTitle('Troops Review')
-        self.setWindowIcon(QIcon(join(ICONS_IMAGES_DIR, 'mainIcon.png')))
+        self.setWindowIcon(QIcon(join(self.ICONS_IMAGES_DIR, 'mainIcon.png')))
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinMaxButtonsHint)
         self.setup_screen_size()
 
