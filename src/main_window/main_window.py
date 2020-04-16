@@ -6,14 +6,15 @@ from os.path import dirname, join
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import (QMainWindow, QDesktopWidget, QAction, QMessageBox)
 from PyQt5.QtGui import QIcon
-from menu.new_file import CreateNewMap
+from menu import menu_bar
+from widgets.map_widget import CentralWidget
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        # Define the directory of ui's files
         self.ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
+
         self.setup_ui()
 
     def setup_geometry(self):
@@ -37,45 +38,9 @@ class MainWindow(QMainWindow):
         self.setMinimumWidth(800)
 
     def setup_menu(self):
-        menubar = self.menuBar()
-        file_menu = menubar.addMenu('&Файл')
-
-        create_new_file = QAction(QIcon(join(self.ICONS_IMAGES_DIR, 'create.png')), 'Создать', self)
-        create_new_file.setShortcut('Ctrl+N')
-        create_new_file.setStatusTip('Создать новую карту')
-        create_new_file.triggered.connect(self.create_file)
-        file_menu.addAction(create_new_file)
-
-        open_file = QAction(QIcon(join(self.ICONS_IMAGES_DIR, 'open.png')), 'Открыть', self)
-        open_file.setShortcut('Ctrl+O')
-        open_file.setStatusTip('Открыть созданную ранее карту')
-        open_file.triggered.connect(self.open_file)
-        file_menu.addAction(open_file)
-
-        help_menu = menubar.addMenu('&Помощь')
-        reference = QAction(QIcon(join(self.ICONS_IMAGES_DIR, 'about.png')), 'О программе', self)
-        reference.setStatusTip('Показать информацию о данной программе')
-        reference.triggered.connect(self.show_info)
-        help_menu.addAction(reference)
-
+        menubar = menu_bar.MenuBar(self)
+        self.setMenuBar(menubar)
         self.statusBar()
-
-    def create_file(self):
-        create_new_file = CreateNewMap(self)
-        create_new_file.show()
-
-    def open_file(self):
-        pass
-
-    def show_info(self):
-        info_message = QMessageBox(parent=self)
-        info_message.setWindowTitle('О программе')
-        info_message.setWindowIcon(QIcon(join(self.ICONS_IMAGES_DIR, 'about.png')))
-        info_message.setIcon(QMessageBox.Question)
-        info_message.setText("""© Lpshkn, 2020""")
-        info_message.setStandardButtons(QMessageBox.Ok)
-        info_message.frameGeometry().moveCenter(info_message.frameGeometry().center())
-        info_message.show()
 
     def setup_title_settings(self):
         self.setWindowTitle('Troops review')
@@ -88,3 +53,9 @@ class MainWindow(QMainWindow):
         self.setup_menu()
 
         self.showMaximized()
+
+    def setup_central_widget(self, map_filename: str, troops_directory: str):
+        central_widget = CentralWidget(self, map_filename, troops_directory)
+        self.setCentralWidget(central_widget)
+        central_widget.show()
+
