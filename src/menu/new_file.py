@@ -12,23 +12,29 @@ from PyQt5 import uic
 from os.path import dirname, join, isfile, isdir
 
 
-ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
-# Define the directory of ui's files
-UI_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'ui')
-# Define the filename to ui file of that Dialog
-FILENAME_UI = join(UI_DIR, 'new_file.ui')
-# Define the form class of that ui
-FORM_CLASS = uic.loadUiType(FILENAME_UI)[0]
-
-
-class CreateNewMap(QDialog, FORM_CLASS):
+class CreateNewMap(QDialog):
     """This class creates a new map with settings were defined in the dialog window."""
 
     def __init__(self, parent):
         QDialog.__init__(self, parent)
+        # Define the filename to ui file of that Dialog
+        self.FILENAME_UI = join(dirname(dirname(dirname(__file__))), 'resources', 'ui', 'new_file.ui')
 
-        # Set the configuration was defined in ui file.
-        self.setupUi(self)
+        # Load .ui file and initialize it
+        try:
+            uic.loadUi(self.FILENAME_UI, self)
+        except FileNotFoundError as e:
+            print(e)
+            exit(-1)
+
+        self.ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
+
+        # Setup main icon to the left corner of the window
+        PATH = join(self.ICONS_IMAGES_DIR, 'mainIcn.png')
+        if not isfile(PATH):
+            print(f"Error: No such file: {PATH}")
+        self.MAIN_ICON = QIcon(PATH)
+
         # Set the icon or any settings
         self.configure_ui()
 
@@ -45,7 +51,7 @@ class CreateNewMap(QDialog, FORM_CLASS):
         """
         Set the window's configuration.
         """
-        self.setWindowIcon(QIcon(join(ICONS_IMAGES_DIR, 'mainIcon.png')))
+        self.setWindowIcon(self.MAIN_ICON)
         self.setWindowModality(Qt.ApplicationModal)
 
     def correct_wrong_path(self):
