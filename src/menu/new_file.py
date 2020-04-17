@@ -9,7 +9,6 @@ from PyQt5.QtWidgets import QDialog, QFileDialog, QLabel
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5 import uic
-from widgets.map_widget import CentralWidget
 from os.path import dirname, join, isfile, isdir
 
 
@@ -49,42 +48,68 @@ class CreateNewMap(QDialog, FORM_CLASS):
         self.setWindowIcon(QIcon(join(ICONS_IMAGES_DIR, 'mainIcon.png')))
         self.setWindowModality(Qt.ApplicationModal)
 
-    def enable_accept_button(self):
+    def correct_wrong_path(self):
+        """
+        This function provides correcting wrong paths to files and directories. It's a slot which called when
+        both of edit lines is changing. If one of the paths is incorrect, then the error will be removed.
+        """
         sender = self.sender()
 
-        if self.incorrect_map_filename and sender == self.mapsDirectoryLine:
+        # This block provides removing an error under the edit line of the map's filename
+        if sender == self.mapsDirectoryLine and self.incorrect_map_filename:
             self.VLayout.removeWidget(self.error_maps_lbl)
             self.error_maps_lbl.deleteLater()
             self.incorrect_map_filename = False
             self.index_troops_line -= 1
 
-        if self.incorrect_troops_directory and sender == self.troopsDirectoryLine:
+        # This block provides removing an error under the edit line of the troops' directory name
+        elif sender == self.troopsDirectoryLine and self.incorrect_troops_directory:
             self.VLayout.removeWidget(self.error_troops_lbl)
             self.error_troops_lbl.deleteLater()
             self.incorrect_troops_directory = False
 
+    def enable_accept_button(self):
+        """
+        This module enables or disables the accept button for this dialog window depending on whether
+        there is text in the edit lines.
+        """
         if self.mapsDirectoryLine.text() and self.troopsDirectoryLine.text():
             self.acceptButton.setEnabled(True)
         else:
             self.acceptButton.setEnabled(False)
 
     def files_manage(self):
+        """
+        It's a slot which is called when the setting button is pressed
+        This method opens the file manager and if a directory or a file is chosen, it fills edit lines
+        """
         sender = self.sender()
 
         if sender == self.mapsDirectoryButton:
-            path_to_map, _ = QFileDialog.getOpenFileName(self, caption="Открыть", directory="",
+            path_to_map, _ = QFileDialog.getOpenFileName(self,
+                                                         caption="Открыть",
+                                                         directory="/",
                                                          filter="Image files (*.jpg *.JPG *.png *.jpeg *.bmp")
 
             if path_to_map:
                 self.mapsDirectoryLine.setText(path_to_map)
 
         elif sender == self.troopsDirectoryButton:
-            directory = QFileDialog.getExistingDirectory(self, caption="Открыть", directory="")
+            directory = QFileDialog.getExistingDirectory(self,
+                                                         caption="Открыть",
+                                                         directory="/")
 
             if directory:
                 self.troopsDirectoryLine.setText(directory)
 
     def accept(self):
+        """
+        It's slot which is called when the accept button is pressed, if it's enabled
+        This method checks that a specified directory or a file is correct and calls the method of creating
+        central widget in the parent widget. Else this method prints an error about that trouble under the edit line
+        and sets particular flags, specifying that error was occurred.
+        """
+
         map_filename = self.mapsDirectoryLine.text()
         troops_directory = self.troopsDirectoryLine.text()
 
@@ -105,6 +130,4 @@ class CreateNewMap(QDialog, FORM_CLASS):
 
         if not self.incorrect_troops_directory and not self.incorrect_map_filename:
             super().accept()
-            central_widget = CentralWidget(self.parent(), map_filename, troops_directory)
-            self.parent().setCentralWidget(central_widget)
-            central_widget.show()
+            self.parent().setup_central_widget(map_filename, troops_directory)
