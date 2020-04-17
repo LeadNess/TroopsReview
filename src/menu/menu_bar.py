@@ -20,8 +20,13 @@ class MenuBar(QMenuBar):
         self.setup_bar()
 
     def setup_bar(self):
-        file_menu = self.addMenu('&Файл')
+        """
+        This method setups menu buttons and connects them to their slots. Every slots of them is in that class.
+        Also, this methods sets the status tip to every action.
+        """
 
+        # Set the "File" menu. There are actions of opening, saving or other actions to working with files
+        file_menu = self.addMenu('&Файл')
         create_new_file = QAction(self.CREATE_ICON, 'Создать', self)
         create_new_file.setShortcut('Ctrl+N')
         create_new_file.setStatusTip('Создать новую карту')
@@ -34,6 +39,7 @@ class MenuBar(QMenuBar):
         open_file.triggered.connect(self.open_file)
         file_menu.addAction(open_file)
 
+        # Set the "Help" menu. There actions of getting a help, information about application etc.
         help_menu = self.addMenu('&Помощь')
         reference = QAction(self.ABOUT_ICON, 'О программе', self)
         reference.setStatusTip('Показать информацию о данной программе')
@@ -41,14 +47,24 @@ class MenuBar(QMenuBar):
         help_menu.addAction(reference)
 
     def create_file(self):
+        """
+        The slot, which called by action of creating new file
+        """
         parent = self.parent()
         parent.new_file_dialog = CreateNewMap(parent)
         parent.new_file_dialog.show()
 
     def open_file(self):
+        """
+        The slot, which called by action of opening existed file
+        """
         pass
 
     def show_info(self):
+        """
+        The slot, which called by action of getting information about that program
+        """
+
         info_message = QMessageBox(parent=self)
         info_message.setWindowTitle('О программе')
         info_message.setWindowIcon(QIcon(join(self.ICONS_IMAGES_DIR, 'about.png')))
