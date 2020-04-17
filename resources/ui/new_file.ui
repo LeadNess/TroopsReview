@@ -280,9 +280,42 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>troopsDirectoryLine</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Dialog</receiver>
+   <slot>correct_wrong_path()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>243</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mapsDirectoryLine</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Dialog</receiver>
+   <slot>correct_wrong_path()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>243</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>files_manage()</slot>
   <slot>enable_accept_button()</slot>
+  <slot>correct_wrong_path()</slot>
  </slots>
 </ui>
