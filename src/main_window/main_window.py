@@ -61,8 +61,6 @@ class MainWindow(QMainWindow):
         self.setup_title_settings()
         self.setup_menu()
 
-        self.showMaximized()
-
     def setup_central_widget(self, map_filename: str, troops_directory: str):
         """
         It's a slot, that is called when all settings are correct and the accept button is pressed in the dialog

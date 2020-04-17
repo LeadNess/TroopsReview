@@ -6,4 +6,5 @@ from main_window.main_window import MainWindow
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ui = MainWindow()
+    ui.showMaximized()
     sys.exit(app.exec_())
