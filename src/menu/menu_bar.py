@@ -8,13 +8,13 @@ from menu.new_file import CreateNewMap
 
 
 class MenuBar(QMenuBar):
+    ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
+    CREATE_ICON_PATH = join(ICONS_IMAGES_DIR, 'create.png')
+    OPEN_ICON_PATH = join(ICONS_IMAGES_DIR, 'open.png')
+    ABOUT_ICON_PATH = join(join(ICONS_IMAGES_DIR, 'about.png'))
+
     def __init__(self, parent):
         super().__init__(parent)
-
-        self.ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
-        self.CREATE_ICON_PATH = join(self.ICONS_IMAGES_DIR, 'create.png')
-        self.OPEN_ICON_PATH = join(self.ICONS_IMAGES_DIR, 'open.png')
-        self.ABOUT_ICON_PATH = join(join(self.ICONS_IMAGES_DIR, 'about.png'))
 
         self.CREATE_ICON = QIcon(self.CREATE_ICON_PATH)
         self.OPEN_ICON = QIcon(self.OPEN_ICON_PATH)
