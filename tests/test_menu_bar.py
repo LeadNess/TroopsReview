@@ -50,3 +50,12 @@ class MenuBarTest(unittest.TestCase):
         self.new_file_button.trigger()
         # And now that dialog exists
         self.assertIsNotNone(self.main.new_file_dialog)
+
+    @unittest.mock.patch('PyQt5.QtWidgets.QMessageBox.show', print)
+    def test_pressing_button_information(self):
+        with self.assertRaises(AttributeError):
+            var = self.menubar.info_message
+
+        self.about_button.trigger()
+        self.assertIsNotNone(self.menubar.info_message)
+        self.assertEqual(self.menubar.info_message.windowTitle(), 'О программе')
