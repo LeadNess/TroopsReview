@@ -2,7 +2,7 @@
 This module represents the class to work with the main window. There are methods to setup geometry, setup
 menu bar, widgets e.t.c.
 """
-from os.path import dirname, join
+from os.path import dirname, join, isfile
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
 from PyQt5.QtGui import QIcon
@@ -14,6 +14,12 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
+
+        # Setup main icon to the left corner of the window
+        self.ICON_PATH = join(self.ICONS_IMAGES_DIR, 'mainIcon.png')
+        if not isfile(self.ICON_PATH):
+            print(f"Error: No such file: {self.ICON_PATH}")
+        self.MAIN_ICON = QIcon(self.ICON_PATH)
 
         self.setup_ui()
 
@@ -50,7 +56,7 @@ class MainWindow(QMainWindow):
         Setup settings of the window's title as like the title, icon or any buttons
         """
         self.setWindowTitle('Troops review')
-        self.setWindowIcon(QIcon(join(self.ICONS_IMAGES_DIR, 'mainIcon.png')))
+        self.setWindowIcon(self.MAIN_ICON)
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.WindowMinMaxButtonsHint)
 
     def setup_ui(self):
