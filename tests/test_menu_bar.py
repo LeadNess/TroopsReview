@@ -1,6 +1,7 @@
 import unittest
 import unittest.mock
 import io
+import sys
 from src.menu.menu_bar import MenuBar
 from PyQt5.QtWidgets import QDesktopWidget, QApplication, QMainWindow
 
@@ -22,6 +23,9 @@ class MenuBarTest(unittest.TestCase):
         # Define actions for the "Help" menu (these actions appear then is putted the cursor in the "Help" menu)
         self.about_button = self.help_menu.actions()[0]
 
+    def tearDown(self):
+        self.app.deleteLater()
+
     # These paths aren't exist
     @unittest.mock.patch('src.menu.menu_bar.MenuBar.ABOUT_ICON_PATH', 'wrong_about')
     @unittest.mock.patch('src.menu.menu_bar.MenuBar.OPEN_ICON_PATH', 'wrong_open')
@@ -35,6 +39,8 @@ class MenuBarTest(unittest.TestCase):
                                                  f"Error: No such file: {MenuBar.OPEN_ICON_PATH}\n"
                                                  f"Error: No such file: {MenuBar.ABOUT_ICON_PATH}\n")
 
+    # It's necessary to not show the dialog window
+    @unittest.mock.patch('PyQt5.QtWidgets.QDialog.show', print)
     def test_pressing_button_create_file(self):
         # The dialog of creating new file doesn't exist at the moment
         with self.assertRaises(AttributeError):
