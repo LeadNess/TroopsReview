@@ -30,7 +30,7 @@ class CreateNewMap(QDialog):
         self.ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
 
         # Setup main icon to the left corner of the window
-        PATH = join(self.ICONS_IMAGES_DIR, 'mainIcn.png')
+        PATH = join(self.ICONS_IMAGES_DIR, 'mainIcon.png')
         if not isfile(PATH):
             print(f"Error: No such file: {PATH}")
         self.MAIN_ICON = QIcon(PATH)

@@ -75,11 +75,11 @@ class MenuBar(QMenuBar):
         The slot, which called by action of getting information about that program
         """
 
-        info_message = QMessageBox(parent=self)
-        info_message.setWindowTitle('О программе')
-        info_message.setWindowIcon(self.ABOUT_ICON)
-        info_message.setIcon(QMessageBox.Question)
-        info_message.setText("""© Lpshkn, 2020""")
-        info_message.setStandardButtons(QMessageBox.Ok)
-        info_message.frameGeometry().moveCenter(info_message.frameGeometry().center())
-        info_message.show()
+        self.info_message = QMessageBox(parent=self)
+        self.info_message.setWindowTitle('О программе')
+        self.info_message.setWindowIcon(self.ABOUT_ICON)
+        self.info_message.setIcon(QMessageBox.Question)
+        self.info_message.setText("""© Lpshkn, 2020""")
+        self.info_message.setStandardButtons(QMessageBox.Ok)
+        self.info_message.frameGeometry().moveCenter(self.info_message.frameGeometry().center())
+        self.info_message.show()
