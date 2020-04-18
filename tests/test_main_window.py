@@ -2,9 +2,9 @@
 Tests for src.main_window.main_window.py module
 """
 import unittest
-from PyQt5 import QtTest
+from os.path import isfile
 from src.main_window.main_window import MainWindow
-from PyQt5.QtWidgets import QDesktopWidget, QApplication
+from PyQt5.QtWidgets import QDesktopWidget, QApplication, QMainWindow
 
 
 class MainWindowTest(unittest.TestCase):
@@ -36,8 +36,19 @@ class MainWindowTest(unittest.TestCase):
         self.assertTrue(abs(x - x_desktop) <= 1)
         self.assertTrue(abs(y - y_desktop) <= 1)
 
+    def test_setting_menubar(self):
+        # Test that menubar was set. If it's new QMainWindow, then its menu bar must be None
+        self.assertIsNotNone(self.main_window.menuWidget())
+        self.assertIsNone(QMainWindow().menuWidget())
 
+    def test_setting_title_parameters(self):
+        self.assertEqual(self.main_window.windowTitle(), 'Troops review')
+        # Check default icon path is a file
+        self.assertTrue(isfile(self.main_window.ICON_PATH))
 
-
-
-
+    def test_setting_central_widget(self):
+        # The central widget isn't set at the moment
+        self.assertIsNone(self.main_window.centralWidget())
+        self.main_window.setup_central_widget('first', 'second')
+        # But now it's set
+        self.assertIsNotNone(self.main_window.centralWidget())
