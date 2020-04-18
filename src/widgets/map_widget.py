@@ -62,8 +62,12 @@ class CentralWidget(QWidget, FORM_CLASS):
         self.map_area.wheelEvent = self.wheelEvent
 
     def set_troops_panel(self):
-        # Load images scaled to the width of the right-hand panel from selected directory
-        images = load_images(self.troops_directory, self.troops_panel.minimumWidth(), self.troops_panel.minimumWidth())
+        try:
+            # Load images scaled to the width of the right-hand panel from selected directory
+            images = load_images(self.troops_directory, self.troops_panel.minimumWidth(), self.troops_panel.minimumWidth())
+        except FileNotFoundError:
+            print(f"FileNotFoundError: \"{__name__}\" can't load images from \"{self.troops_directory}\"")
+            return
 
         for image in images:
             label = QLabel(self.troops_panel)
