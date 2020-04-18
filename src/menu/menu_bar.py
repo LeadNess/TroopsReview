@@ -3,7 +3,7 @@ This module represents a menu bar of the main window
 """
 from PyQt5.QtWidgets import QMenuBar, QAction, QMessageBox
 from PyQt5.QtGui import QIcon
-from os.path import join, dirname
+from os.path import join, dirname, isfile
 from menu.new_file import CreateNewMap
 
 
@@ -12,10 +12,20 @@ class MenuBar(QMenuBar):
         super().__init__(parent)
 
         self.ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
+        self.CREATE_ICON_PATH = join(self.ICONS_IMAGES_DIR, 'create.png')
+        self.OPEN_ICON_PATH = join(self.ICONS_IMAGES_DIR, 'open.png')
+        self.ABOUT_ICON_PATH = join(join(self.ICONS_IMAGES_DIR, 'about.png'))
 
-        self.CREATE_ICON = QIcon(join(self.ICONS_IMAGES_DIR, 'create.png'))
-        self.OPEN_ICON = QIcon(join(self.ICONS_IMAGES_DIR, 'open.png'))
-        self.ABOUT_ICON = QIcon(join(self.ICONS_IMAGES_DIR, 'about.png'))
+        self.CREATE_ICON = QIcon(self.CREATE_ICON_PATH)
+        self.OPEN_ICON = QIcon(self.OPEN_ICON_PATH)
+        self.ABOUT_ICON = QIcon(self.ABOUT_ICON_PATH)
+
+        if not isfile(self.CREATE_ICON_PATH):
+            print(f"Error: No such file: {self.CREATE_ICON_PATH}")
+        if not isfile(self.OPEN_ICON_PATH):
+            print(f"Error: No such file: {self.OPEN_ICON_PATH}")
+        if not isfile(self.ABOUT_ICON_PATH):
+            print(f"Error: No such file: {self.ABOUT_ICON_PATH}")
 
         self.setup_bar()
 
@@ -67,7 +77,7 @@ class MenuBar(QMenuBar):
 
         info_message = QMessageBox(parent=self)
         info_message.setWindowTitle('О программе')
-        info_message.setWindowIcon(QIcon(join(self.ICONS_IMAGES_DIR, 'about.png')))
+        info_message.setWindowIcon(self.ABOUT_ICON)
         info_message.setIcon(QMessageBox.Question)
         info_message.setText("""© Lpshkn, 2020""")
         info_message.setStandardButtons(QMessageBox.Ok)
