@@ -1,6 +1,6 @@
 import io
 import unittest.mock
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout
 from src.menu.new_file import NewFileDialog
 from PyQt5.QtTest import QTest
 
@@ -28,23 +28,33 @@ class MyTestCase(unittest.TestCase):
             NewFileDialog(QMainWindow())
 
     def test_default_flags(self):
-        dialog = NewFileDialog(QMainWindow())
-        self.assertFalse(dialog.incorrect_map_filename)
-        self.assertFalse(dialog.incorrect_troops_directory)
+        self.assertFalse(self.new_map.incorrect_map_filename)
+        self.assertFalse(self.new_map.incorrect_troops_directory)
 
     def test_setting_modality(self):
         self.assertTrue(self.new_map.isModal())
 
     @unittest.mock.patch("PyQt5.QtWidgets.QDialog.sender")
     def test_remove_widget(self, sender):
-        dialog = NewFileDialog(QMainWindow())
+        sender.return_value = self.new_map.mapsDirectoryLine
+        self.new_map.incorrect_map_filename = True
+        with self.assertRaises(AttributeError):
+            self.new_map.correct_wrong_path()
 
-        sender.return_value = dialog.mapsDirectoryLine
-        dialog.incorrect_map_filename = True
-        with self.assertRaises(RuntimeError):
-            dialog.correct_wrong_path()
+        sender.return_value = self.new_map.troopsDirectoryLine
+        self.new_map.incorrect_troops_directory = True
+        with self.assertRaises(AttributeError):
+            self.new_map.correct_wrong_path()
 
-        sender.return_value = dialog.troopsDirectoryLine
-        dialog.incorrect_troops_directory = True
-        with self.assertRaises(RuntimeError):
-            dialog.correct_wrong_path()
+    @unittest.mock.patch("PyQt5.QtWidgets.QDialog.sender")
+    def test_correct_wrong_map_file(self, sender):
+        sender.return_value = self.new_map.mapsDirectoryLine
+        self.new_map.incorrect_map_filename = True
+
+        self.new_map.error_maps_lbl = QLabel("test")
+        self.new_map.VLayout.addWidget(self.new_map.error_maps_lbl)
+        self.assertIsNotNone(self.new_map.error_maps_lbl)
+        self.new_map.correct_wrong_path()
+
+        self.assertFalse(self.new_map.incorrect_map_filename)
+        self.assertIsNone(self.new_map.error_maps_lbl)
