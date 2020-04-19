@@ -67,13 +67,10 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QGraphicsView" name="map_area"/>
+    <widget class="QGraphicsView" name="mapArea"/>
    </item>
   </layout>
  </widget>
  <resources/>
  <connections/>
- <slots>
-  <signal>wheelEvent()</signal>
- </slots>
 </ui>
