@@ -4,7 +4,7 @@ This module represents a menu bar of the main window
 from PyQt5.QtWidgets import QMenuBar, QAction, QMessageBox
 from PyQt5.QtGui import QIcon
 from os.path import join, dirname, isfile
-from src.menu.new_file import CreateNewMap
+from src.menu.new_file import NewFileDialog
 
 
 class MenuBar(QMenuBar):
@@ -61,7 +61,7 @@ class MenuBar(QMenuBar):
         The slot, which called by action of creating new file
         """
         parent = self.parent()
-        parent.new_file_dialog = CreateNewMap(parent)
+        parent.new_file_dialog = NewFileDialog(parent)
         parent.new_file_dialog.show()
 
     def open_file(self):

@@ -12,13 +12,15 @@ from PyQt5 import uic
 from os.path import dirname, join, isfile, isdir
 
 
-class CreateNewMap(QDialog):
+class NewFileDialog(QDialog):
     """This class creates a new map with settings were defined in the dialog window."""
+
+    FILENAME_UI = join(dirname(dirname(dirname(__file__))), 'resources', 'ui', 'new_file.ui')
+    ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
 
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         # Define the filename to ui file of that Dialog
-        self.FILENAME_UI = join(dirname(dirname(dirname(__file__))), 'resources', 'ui', 'new_file.ui')
 
         # Load .ui file and initialize it
         try:
@@ -26,8 +28,6 @@ class CreateNewMap(QDialog):
         except FileNotFoundError as e:
             print(e)
             exit(-1)
-
-        self.ICONS_IMAGES_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'images', 'icons')
 
         # Setup main icon to the left corner of the window
         PATH = join(self.ICONS_IMAGES_DIR, 'mainIcon.png')
@@ -41,11 +41,6 @@ class CreateNewMap(QDialog):
         # These values specify that paths were written in the edit line by user were incorrect.
         self.incorrect_map_filename = False
         self.incorrect_troops_directory = False
-
-        # These values are necessary to find out indices of lines edit
-        # Initially they are known from the ui file
-        self.index_maps_line = 1
-        self.index_troops_line = 3
 
     def configure_ui(self):
         """
@@ -66,7 +61,6 @@ class CreateNewMap(QDialog):
             self.VLayout.removeWidget(self.error_maps_lbl)
             self.error_maps_lbl.deleteLater()
             self.incorrect_map_filename = False
-            self.index_troops_line -= 1
 
         # This block provides removing an error under the edit line of the troops' directory name
         elif sender == self.troopsDirectoryLine and self.incorrect_troops_directory:
@@ -119,18 +113,25 @@ class CreateNewMap(QDialog):
         map_filename = self.mapsDirectoryLine.text()
         troops_directory = self.troopsDirectoryLine.text()
 
+        # This index will be a measure to insert error label under an edit line if an error will be occurred
+        index_map_label = self.VLayout.indexOf(self.map_label)
+
         if not isfile(map_filename) and not self.incorrect_map_filename:
             self.error_maps_lbl = QLabel("Ошибка: данного файла не существует", self)
             self.error_maps_lbl.setStyleSheet('QLabel { color : red; }')
-            self.VLayout.insertWidget(self.index_maps_line + 1, self.error_maps_lbl)
-            self.index_troops_line += 1
+            # Add 2 to index, because there is a line edit under this label
+            self.VLayout.insertWidget(index_map_label + 2, self.error_maps_lbl)
             self.incorrect_map_filename = True
             self.acceptButton.setEnabled(False)
+
+        # This index will be a measure to insert error label under an edit line if an error will be occurred
+        index_troops_label = self.VLayout.indexOf(self.troops_label)
 
         if not isdir(troops_directory) and not self.incorrect_troops_directory:
             self.error_troops_lbl = QLabel("Ошибка: данной директории не существует", self)
             self.error_troops_lbl.setStyleSheet('QLabel { color : red; }')
-            self.VLayout.insertWidget(self.index_troops_line + 1, self.error_troops_lbl)
+            # Add 2 to index, because there is a line edit under this label
+            self.VLayout.insertWidget(index_troops_label + 2, self.error_troops_lbl)
             self.incorrect_troops_directory = True
             self.acceptButton.setEnabled(False)
 
