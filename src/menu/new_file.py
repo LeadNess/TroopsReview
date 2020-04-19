@@ -60,12 +60,14 @@ class NewFileDialog(QDialog):
         if sender == self.mapsDirectoryLine and self.incorrect_map_filename:
             self.VLayout.removeWidget(self.error_maps_lbl)
             self.error_maps_lbl.deleteLater()
+            self.error_maps_lbl = None
             self.incorrect_map_filename = False
 
         # This block provides removing an error under the edit line of the troops' directory name
         elif sender == self.troopsDirectoryLine and self.incorrect_troops_directory:
             self.VLayout.removeWidget(self.error_troops_lbl)
             self.error_troops_lbl.deleteLater()
+            self.error_troops_lbl = None
             self.incorrect_troops_directory = False
 
     def enable_accept_button(self):
