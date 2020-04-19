@@ -2,6 +2,8 @@
 Tests for src.main_window.main_window.py module
 """
 import unittest
+import unittest.mock
+import io
 from os.path import isfile
 from src.main_window.main_window import MainWindow
 from PyQt5.QtWidgets import QDesktopWidget, QApplication, QMainWindow
@@ -46,7 +48,9 @@ class MainWindowTest(unittest.TestCase):
         # Check default icon path is a file
         self.assertTrue(isfile(self.main_window.ICON_PATH))
 
-    def test_setting_central_widget(self):
+    # It's necessary to not print an error to the console
+    @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
+    def test_setting_central_widget(self, string_io):
         # The central widget isn't set at the moment
         self.assertIsNone(self.main_window.centralWidget())
         self.main_window.setup_central_widget('first', 'second')
