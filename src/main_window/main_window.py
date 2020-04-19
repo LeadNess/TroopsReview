@@ -6,8 +6,8 @@ from os.path import dirname, join, isfile
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
 from PyQt5.QtGui import QIcon
-from menu import menu_bar
-from widgets.map_widget import CentralWidget
+from src.menu import menu_bar
+from src.widgets.map_widget import CentralWidget
 
 
 class MainWindow(QMainWindow):

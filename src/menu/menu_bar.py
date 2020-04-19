@@ -4,7 +4,7 @@ This module represents a menu bar of the main window
 from PyQt5.QtWidgets import QMenuBar, QAction, QMessageBox
 from PyQt5.QtGui import QIcon
 from os.path import join, dirname, isfile
-from menu.new_file import CreateNewMap
+from src.menu.new_file import CreateNewMap
 
 
 class MenuBar(QMenuBar):
