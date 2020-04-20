@@ -7,7 +7,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget
 from PyQt5.QtGui import QIcon
 from src.menu import menu_bar
-from src.widgets.map_widget import CentralWidget
+from src.widgets.central_widget import CentralWidget
 
 
 class MainWindow(QMainWindow):
