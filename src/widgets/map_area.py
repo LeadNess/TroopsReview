@@ -77,4 +77,7 @@ class MapArea(QGraphicsView):
         self.keys.add(event.key())
 
     def keyReleaseEvent(self, event):
-        self.keys.remove(event.key())
+        try:
+            self.keys.remove(event.key())
+        except KeyError:
+            return
