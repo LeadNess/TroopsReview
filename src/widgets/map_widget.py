@@ -9,13 +9,6 @@ from os.path import dirname, join
 from os import listdir
 from src.widgets.map_area import MapArea
 
-# Define the directory of ui's files
-UI_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'ui')
-# Define the filename to ui file of that widget
-FILENAME_UI = join(UI_DIR, 'centralWidget.ui')
-# Define the form class of that ui
-FORM_CLASS = uic.loadUiType(FILENAME_UI)[0]
-
 
 def load_images(directory, width=None, height=None):
     """
@@ -37,15 +30,26 @@ def load_images(directory, width=None, height=None):
         return images
 
 
-class CentralWidget(QWidget, FORM_CLASS):
+class CentralWidget(QWidget):
     """
     Class represents the main action in this program. It provides the ability to modulate fight actions at the map.
     Also it allows to drag troops' images into the map from the right panel, which it implements too.
     """
+
+    # Define the directory of ui's files
+    UI_DIR = join(dirname(dirname(dirname(__file__))), 'resources', 'ui')
+    # Define the filename to ui file of that widget
+    FILENAME_UI = join(UI_DIR, 'centralWidget.ui')
+
     def __init__(self, parent, map_filename, troops_directory):
         QWidget.__init__(self, parent)
 
-        self.setupUi(self)
+        # Load .ui file and initialize it
+        try:
+            uic.loadUi(self.FILENAME_UI, self)
+        except FileNotFoundError as e:
+            print(e)
+            exit(-1)
 
         self.map_filename = map_filename
         self.troops_directory = troops_directory
