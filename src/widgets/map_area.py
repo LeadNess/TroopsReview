@@ -13,7 +13,7 @@ class MapArea(QGraphicsView):
 
         self.zoom = 1
         self.current_scale = 1.0
-        self.maximum_scale = 2
+        self.maximum_scale = 3
 
         self.scene = QGraphicsScene()
         self.keys = set()
@@ -24,6 +24,12 @@ class MapArea(QGraphicsView):
 
     def wheelEvent(self, event):
         if Qt.Key_Control in self.keys:
+            # Set Anchors
+            self.setTransformationAnchor(QGraphicsView.NoAnchor)
+            self.setResizeAnchor(QGraphicsView.NoAnchor)
+
+            old_pos = self.mapToScene(event.pos())
+
             self.min_scale_for_width = self.width() / self.scene.width()
             self.min_scale_for_height = self.height() / self.scene.height()
 
@@ -44,6 +50,13 @@ class MapArea(QGraphicsView):
                     scale = self.current_scale / self.min_scale_for_width
                     self.scale(1 / scale, 1 / scale)
                     self.current_scale /= scale
+
+            new_pos = self.mapToScene(event.pos())
+
+            # Move scene to old position
+            delta = new_pos - old_pos
+            self.translate(delta.x(), delta.y())
+
         else:
             vertical = self.verticalScrollBar().value()
             horizontal = self.horizontalScrollBar().value()
